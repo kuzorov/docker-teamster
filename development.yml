@@ -1,0 +1,18 @@
+version: '2'
+services:
+  docker-teamster:
+    build:
+      context: ${DOCKER_TEAMSTER_LOCAL_PATH}
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - >
+        DOCKER_TEAMSTER_CONFIG={
+          "watch": [],
+          "ignore": [],
+          "usePolling": false,
+          restartAwait: 100,
+          "bindings": {
+
+          }
+        }
