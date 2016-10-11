@@ -28,7 +28,7 @@ function getConfig() {
         config.bindings = userConfig.bindings || config.bindings;
     }
 
-    return config
+    return config;
 }
 
 

@@ -5,6 +5,8 @@ services:
       context: ${DOCKER_TEAMSTER_LOCAL_PATH}
       dockerfile: Dockerfile
     restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - >
         DOCKER_TEAMSTER_CONFIG={
