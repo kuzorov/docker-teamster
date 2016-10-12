@@ -8,45 +8,45 @@ import timestamp from 'console-timestamp'
  * @param {Array} files
  */
 export default function (files) {
-    let restartContainersList = [];
+    let restartServicesList = [];
     let bindings = {};
     Object.assign(bindings, config.bindings);
 
     /*
-     * Scan bindings and add containers that have to be restarted
+     * Scan bindings and add services that have to be restarted
      * */
     files.forEach(file => {
-        for (let key in bindings) {
-            var pattern = new RegExp(bindings[key]);
+        for (let serviceName in bindings) {
+            var pattern = new RegExp(bindings[serviceName]);
 
             if (pattern.test(file)) {
-                restartContainersList.push(key);
-                delete bindings[key];
+                restartServicesList.push(serviceName);
+                delete bindings[serviceName];
             }
         }
     });
 
-    if (restartContainersList.length === 0) {
+    if (restartServicesList.length === 0) {
         return;
     }
 
-    restartContainers(restartContainersList);
+    restartServices(restartServicesList);
 }
 
 /**
- * Restart containers
+ * Restart services
  *
- * @param {Array} containers
+ * @param {Array} services
  */
-function restartContainers(containers) {
+function restartServices(services) {
     let docker = new Docker({socketPath: '/var/run/docker.sock'});
-    containers.forEach(containerName=> {
-        docker.listContainers({"filters": {label: [`com.docker.compose.service=${containerName}`]}},
+    services.forEach(serviceName=> {
+        docker.listContainers({"filters": {label: [`com.docker.compose.service=${serviceName}`]}},
             (err, containers)=> {
                 containers.forEach(container => {
                     let containerInstance = docker.getContainer(container.Id);
                     containerInstance.restart(()=> {
-                        console.log(`[${timestamp()}] Container ${containerName} with id ${container.Id} restarted.`);
+                        console.log(`[${timestamp()}] ${serviceName} service container (${container.Id}) restarted.`);
                     });
                 });
             }
