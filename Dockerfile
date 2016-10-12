@@ -1,12 +1,9 @@
 FROM node
 
-# Install app.
-WORKDIR ./data/docker-teamster
+# Setting up working dir.
+WORKDIR /data/docker-teamster
 
-# Install app.
-ADD ./ /data/docker-teamster
-
-# Expose search port.
-EXPOSE 80
+# Add codebase to container.
+ADD . /data/docker-teamster
 
 CMD ["npm", "run", "start"]

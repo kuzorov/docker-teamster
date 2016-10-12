@@ -6,7 +6,7 @@ machine:
 
 dependencies:
   override:
-    - docker run -v .:/app -w="/app" node npm install
+    - docker run -v $(pwd):/app -w="/app" node npm install
 
 deployment:
   staging:
