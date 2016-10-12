@@ -1,0 +1,20 @@
+machine:
+  node:
+    version: 4.1.0
+  php:
+    version: 5.6.5
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker run -v .:/app -w="/app" node npm install
+
+deployment:
+  staging:
+    branch: master
+    commands:
+      - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD --email $DOCKER_HUB_EMAIL
+      # eg. TEAMSTER_REPO="docker.io/kuzorov/teamster
+      - docker build -t $TEAMSTER_REPO .
+      - docker push $TEAMSTER_REPO
